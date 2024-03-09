@@ -1,5 +1,4 @@
 import java.util.List;
-import java.util.ListIterator;
 
 public class Day_1 {
     public static int part_1(List<String> data) {
