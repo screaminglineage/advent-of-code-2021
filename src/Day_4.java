@@ -11,8 +11,8 @@ public class Day_4 {
         }
 
         private int find(int[] nums, int num) {
-            for (int i = 0; i < grid.length; ++i) {
-                if (grid[i] == num) {
+            for (int i = 0; i < nums.length; ++i) {
+                if (nums[i] == num) {
                     return i;
                 }
             }
@@ -20,11 +20,9 @@ public class Day_4 {
         }
 
         public boolean isBingo() {
-            boolean bingoRow = true;
-            boolean bingoCol = true;
             // checking by row
             for (int row = 0; row < 5; row++) {
-                bingoRow = true;
+                boolean bingoRow = true;
                 for (int col = 0; col < 5; col++) {
                     if (!this.marked.contains(row * 5 + col)) {
                         bingoRow = false;
@@ -37,7 +35,7 @@ public class Day_4 {
             }
             // checking by column
             for (int col = 0; col < 5; col++) {
-                bingoCol = true;
+                boolean bingoCol = true;
                 for (int row = 0; row < 5; row++) {
                     if (!this.marked.contains(row * 5 + col)) {
                         bingoCol = false;
