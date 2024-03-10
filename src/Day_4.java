@@ -68,13 +68,49 @@ public class Day_4 {
         }
     }
 
-    public static int part_1(List<String> data) {
+    private static int calculateScoreFirst(int[] nums, List<Board> boards) {
+        for (int num : nums) {
+            for (Board board : boards) {
+                board.play(num);
+                if (board.isBingo()) {
+                    return num * board.unmarkedSum();
+                }
+            }
+        }
+        throw new RuntimeException("Unreachable!");
+    }
+
+    private static int calculateScoreLast(int[] nums, List<Board> boards) {
+        int boardCount = boards.size();
+        Set<Integer> wonBoards = new HashSet<>();
+        for (int num : nums) {
+            for (int i = 0; i < boardCount; ++i) {
+                if (wonBoards.contains(i)) {
+                    continue;
+                }
+                Board board = boards.get(i);
+                board.play(num);
+                if (board.isBingo()) {
+                    wonBoards.add(i);
+                    if (wonBoards.size() == boardCount) {
+                        return num * board.unmarkedSum();
+                    }
+                }
+            }
+        }
+        throw new RuntimeException("Unreachable!");
+    }
+
+    private static int[] parseNums(List<String> data) {
         String[] numsData = data.getFirst().split(",");
         int[] nums = new int[numsData.length];
         for (int i = 0; i < numsData.length; ++i) {
             nums[i] = Integer.parseInt(numsData[i]);
         }
-        System.out.println(Arrays.toString(nums));
+        return nums;
+    }
+
+    private static List<Board> parseBoards(List<String> data) {
         List<Board> boards = new ArrayList<>();
         List<String> boardData = data.subList(2, data.size());
         int count = 0;
@@ -95,30 +131,19 @@ public class Day_4 {
             boards.add(new Board(grid));
             count += 1;
         }
+        return boards;
+    }
 
-        for (int i = 0; i < 3; ++i) {
-            System.out.println(Arrays.toString(boards.get(i).grid));
-        }
+    public static int part_1(List<String> data) {
+        int[] nums = parseNums(data);
+        List<Board> boards = parseBoards(data);
+        return calculateScoreFirst(nums, boards);
+    }
 
-        int boardCount = boards.size();
-        Set<Integer> wonBoards = new HashSet<>();
-        for (int num : nums) {
-            for (int i = 0; i < boardCount; ++i) {
-                if (wonBoards.contains(i)) {
-                    continue;
-                }
-                Board board = boards.get(i);
-                board.play(num);
-                if (board.isBingo()) {
-                    wonBoards.add(i);
-                    if (wonBoards.size() == boardCount) {
-                        return num * board.unmarkedSum();
-                    }
-                }
-
-            }
-        }
-        return 0;
+    public static int part_2(List<String> data) {
+        int[] nums = parseNums(data);
+        List<Board> boards = parseBoards(data);
+        return calculateScoreLast(nums, boards);
     }
 
 }
